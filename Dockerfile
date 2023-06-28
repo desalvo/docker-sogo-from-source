@@ -1,18 +1,16 @@
 FROM ubuntu:jammy
 
-ARG ARCH=aarch64
+ARG TARGETPLATFORM
+ARG SOGO_VERSION=5.8.4
 
 RUN apt update && apt install -y curl lsb
 
-RUN echo $(curl --silent -L "https://api.github.com/repos/inverse-inc/sogo/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c 6-) > /tmp/sogo_version
+#RUN echo $(curl --silent -L "https://api.github.com/repos/inverse-inc/sogo/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c 6-) > /tmp/sogo_version
 
-#ENV SOGO_VERSION=5.2.0
-#RUN echo $SOGO_VERSION > /tmp/sogo_version
+RUN echo $SOGO_VERSION > /tmp/sogo_version
 
-RUN echo $(curl --silent -L "https://api.github.com/repos/inverse-inc/sogo/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c 6- | head -c 1) > /tmp/sogo_maj_version
-
-#ENV MAJ_VERSION=5
-#RUN echo $MAJ_VERSION > /tmp/sogo_maj_version
+#RUN echo $(curl --silent -L "https://api.github.com/repos/inverse-inc/sogo/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c 6- | head -c 1) > /tmp/sogo_maj_version
+RUN echo $(echo $SOGO_VERSION | cut -d . -f 1) > /tmp/sogo_maj_version
 
 WORKDIR /tmp/build
 
